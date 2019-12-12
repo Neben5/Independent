@@ -1,4 +1,4 @@
-package mandelbrot;
+package com.mandelbrot;
 import java.awt.*;
 
 public class Complex {
