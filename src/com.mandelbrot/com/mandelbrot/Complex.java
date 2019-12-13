@@ -24,6 +24,7 @@ public class Complex {
         return new Complex(real,imaginary);
     }
     public static Complex complexify(Point point){
+
         return new Complex(point.x,point.y);
     }
 }

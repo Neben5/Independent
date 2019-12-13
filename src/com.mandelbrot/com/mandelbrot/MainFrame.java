@@ -13,6 +13,7 @@ public class MainFrame extends JFrame implements MouseListener {
   MainFrame(){
     setDefaults();
     ControlThread Controller = new ControlThread();
+    CalcBroker BrokerComponent = new CalcBroker();
   }
   private void setDefaults(){
     //set frame defaults

@@ -1,4 +1,7 @@
 package com.mandelbrot;
 
-public class CalcBroker {
+import javax.swing.*;
+
+public class CalcBroker extends JFrame {
+    Calculator[] calculators;
 }
