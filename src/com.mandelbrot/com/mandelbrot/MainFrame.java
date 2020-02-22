@@ -1,22 +1,33 @@
 package com.mandelbrot;
 
-import com.mandelbrot.ControlThread;
-
 import javax.swing.*;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class MainFrame extends JFrame implements MouseListener {
-  public static void main(String [] args){
-    System.out.println("Hi");
+  public static int width;
+  public static int height;
+  public static boolean click = false;
+
+  public static void main(String[] args) {
+    new MainFrame();
   }
-  MainFrame(){
+
+  MainFrame() {
     setDefaults();
-    ControlThread Controller = new ControlThread();
+    ControlFrame Controller = new ControlFrame();
     CalcBroker BrokerComponent = new CalcBroker();
   }
-  private void setDefaults(){
-    //set frame defaults
+
+  private void setDefaults() {
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+    setVisible(true);
+    repaint();
+    setSize(1235, 630);
+    setBackground(Color.white);
+    setTitle("Mandy");
   }
 
   @Override
