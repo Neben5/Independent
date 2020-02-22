@@ -6,6 +6,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class MainFrame extends JFrame implements MouseListener {
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
   public static int width;
   public static int height;
   public static boolean click = false;
