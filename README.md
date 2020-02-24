@@ -11,7 +11,7 @@ As of yet, this manages to draw nothing but the control panel, and even then par
 I completely tossed out my previous work, as it was unorganized and inefficient.
 I created a more standard and ubiquitous builder and packaging, such that this app could be used more broadly.
 ## Errors
-Nothing to actually run yet, so none.
+Nothing to actually run yet, so none. Build script does not work.
 ## Overview
 
 See Mandelbrot Layout.png. MainFrame is the entrypoint and the main window. It controls the window, mouse events, the CalcBroker, and the ControlThread.
