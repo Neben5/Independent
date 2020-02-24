@@ -1,4 +1,3 @@
-package com.mandelbrot;
 
 import javax.swing.*;
 

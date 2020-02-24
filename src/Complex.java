@@ -1,4 +1,3 @@
-package com.mandelbrot;
 
 public class Complex {
     private double real, imag;

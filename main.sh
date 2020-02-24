@@ -1,3 +1,4 @@
-javac -d ./build src/com.mandelbrot/com.mandelbrot/*.java
-jar cmvf META-INF/MANIFEST.mf ./build/mandelbrot.jar ./build/mandelbrot/*
-java -jar ./build/mandelbrot.jar
+javac -d ./build src/*.java
+java -cp ./build MainFrame
+#jar cmvf ./build/mandelbrot.jar -ea .build/MainFrame.class ./build/*
+#java -jar ./build/mandelbrot.jar
