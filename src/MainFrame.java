@@ -42,7 +42,7 @@ public class MainFrame extends JFrame implements MouseListener {
 
     for(int x = 0; x < this.width; x++){
       for(int y = 0; y < this.height; y++){
-        comps[x][y] = new Complex(-2+(4/this.width)*x,-2+(4/this.height)*y);
+        comps[x][y] = new Complex(-2+(4./(double)this.width)*x,-2+(4./(double)this.height)*y);
       }
     }
 
