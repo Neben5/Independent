@@ -111,7 +111,10 @@ public class Complex {
         Complex instance = multiply(this);
         this.real = instance.real;
         this.imag = instance.imag;
-        this.iterations++;
+        this.iterations+=1000000;
+        if(iterations>=2000000000){
+            iterations=Integer.MAX_VALUE;
+        }
         return this;
     }
 }

@@ -26,15 +26,14 @@ public class MainFrame extends JFrame implements MouseListener {
     for(int x = 0; x < this.width; x++){
       for(int y = 0; y < this.height; y++){
         if(comps[x][y].magnitude()==0){
-          outs[x][y] = 0;
+          outs[x][y] = Integer.MIN_VALUE;
         } else if(comps[x][y].magnitude()>=2.){
-          outs[x][y] = Integer.MAX_VALUE;
+          outs[x][y] = comps[x][y].getIterations();
         } else{
           outs[x][y] = comps[x][y].square().getIterations();
         }
       }
     }
-    System.out.println("done");
   }
 
   MainFrame() {
@@ -71,10 +70,11 @@ public class MainFrame extends JFrame implements MouseListener {
     calc();
     for (int x = 0; x < this.width; x++) {
       for (int y = 0; y < this.height; y++) {
-        img.setRGB(x, y, Color.getHSBColor(hsb[0], hsb[1], 1f - (outs[x][y] * 0.1f)).getRGB());
+        img.setRGB(x, y, Color.getHSBColor(hsb[0], hsb[1], 1f - ((float)outs[x][y]/(float)Integer.MAX_VALUE)).getRGB());
       }
     }
     g.drawImage(img, 0, 0, null);
+
     repaint();
   }
 
