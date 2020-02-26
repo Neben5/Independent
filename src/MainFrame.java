@@ -16,7 +16,7 @@ public class MainFrame extends JFrame implements MouseListener {
   public Consumer<Color> cSupplier = (a) -> redraw(a);
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);;
   private int[][] outs = new int[this.width][this.height];
-  private Complex[][] comps = new Complex[this.width][this.height];
+  private Mandy[][] comps = new Mandy[this.width][this.height];
 
   public static void main(String[] args) {
     new MainFrame();
@@ -25,25 +25,23 @@ public class MainFrame extends JFrame implements MouseListener {
   public void calc() {
     for(int x = 0; x < this.width; x++){
       for(int y = 0; y < this.height; y++){
-        if(comps[x][y].magnitude()==0){
-          outs[x][y] = Integer.MIN_VALUE;
-        } else if(comps[x][y].magnitude()>=2.){
-          outs[x][y] = comps[x][y].getIterations();
-        } else{
-          outs[x][y] = comps[x][y].square().getIterations();
-        }
+        outs[x][y] = comps[x][y].calculate();
       }
     }
+    System.out.println("done");
   }
 
   MainFrame() {
-    setDefaults();
-
     for(int x = 0; x < this.width; x++){
       for(int y = 0; y < this.height; y++){
-        comps[x][y] = new Complex(-2+(4./(double)this.width)*x,-2+(4./(double)this.height)*y);
+        comps[x][y] = new Mandy(-2.+(2./(double)this.width)*(double)x,-2.+(2./(double)this.height)*(double)y);
       }
     }
+
+
+    setDefaults();
+
+
 
     new ControlFrame(cSupplier);
     new CalcBroker();
@@ -70,7 +68,11 @@ public class MainFrame extends JFrame implements MouseListener {
     calc();
     for (int x = 0; x < this.width; x++) {
       for (int y = 0; y < this.height; y++) {
-        img.setRGB(x, y, Color.getHSBColor(hsb[0], hsb[1], 1f - ((float)outs[x][y]/(float)Integer.MAX_VALUE)).getRGB());
+        try{
+        img.setRGB(x,y, new Color(1f-((float)outs[x][y]/255f),1f-((float)outs[x][y]/255f),1f-((float)outs[x][y]/255f)).getRGB());
+        }catch(Exception e){
+          System.out.println(outs[x][y]);
+        }
       }
     }
     g.drawImage(img, 0, 0, null);
