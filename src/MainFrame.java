@@ -11,8 +11,8 @@ public class MainFrame extends JFrame implements MouseListener {
    *
    */
   private static final long serialVersionUID = 1L;
-  private int width = 600;
-  private int height = 600;
+  private int width = 800;
+  private int height = 800;
   public Consumer<Color> cSupplier = (a) -> redraw(a);
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);;
   private Mandy[][] comps = new Mandy[this.width][this.height];
@@ -62,7 +62,6 @@ public class MainFrame extends JFrame implements MouseListener {
         Color c = Color.getHSBColor(hsb[0], hsb[1], i);
         img.setRGB(x, y, c.getRGB());
       }
-
     }
     g.drawImage(img, 0, 0, null);
     repaint();

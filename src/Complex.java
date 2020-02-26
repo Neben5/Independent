@@ -59,7 +59,7 @@ public class Complex {
     }
 
     public double magnitude() {
-        return Math.sqrt(Math.pow(this.imag, 2) + Math.pow(this.real, 2));
+        return Math.hypot(real, imag);
     }
 
     public double argument() {
@@ -87,8 +87,11 @@ public class Complex {
                 ((thatOther.real * that.imag) + (thatOther.imag + that.real)));
     }
 
-    public Complex multiply(Complex that) {
-        return new Complex(((this.real * that.real) - (this.imag * that.imag)), 2 * this.real * that.imag);
+    public Complex multiply(Complex b) {
+        Complex a = this;
+        double real = a.real * b.real - a.imag* b.imag;
+        double imag = a.real * b.imag + a.imag * b.real;
+        return new Complex(real, imag);
     }
 
     public static Complex divide(Complex that, Complex thatOther) {
@@ -102,8 +105,6 @@ public class Complex {
     }
 
     public Complex square() {
-        this.real = Math.pow(this.real, 2) - Math.pow(this.imag, 2);
-        this.imag = 2 * this.imag * this.real;
-        return this;
+        return multiply(this);
     }
 }
