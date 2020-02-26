@@ -6,7 +6,7 @@ public class Mandy{
         mine = new Complex(r,i);
     }
     public int calculate(){
-        if(current.magnitude()<2. && iterations<255){
+        if(current.magnitude()<=2. && iterations<255){
             current = current.square().add(mine);
             iterations++;
         }

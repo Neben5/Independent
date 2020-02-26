@@ -59,12 +59,12 @@ public class MainFrame extends JFrame implements MouseListener {
     for (int x = 0; x < this.width; x++) {
       for (int y = 0; y < this.height; y++) {
         float i = 1f - ((float) comps[x][y].calculate() / 255f);
-        img.setRGB(x, y, new Color(i, i, i).getRGB());
+        Color c = Color.getHSBColor(hsb[0], hsb[1], i);
+        img.setRGB(x, y, c.getRGB());
       }
-    }
-    System.out.println(comps[a][b]);
-    g.drawImage(img, 0, 0, null);
 
+    }
+    g.drawImage(img, 0, 0, null);
     repaint();
   }
 
