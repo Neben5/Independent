@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public class MainFrame extends JFrame implements MouseListener {
   /**
-   *
+   * I haveno idea what this is
    */
   private static final long serialVersionUID = 1L;
   private int width = 800;
@@ -22,15 +22,18 @@ public class MainFrame extends JFrame implements MouseListener {
     new MainFrame();
   }
 
-  MainFrame() {
+  private void setComps(double horzRange, double vertRange){
     for (int x = 0; x < this.width; x++) {
       for (int y = 0; y < this.height; y++) {
-        double reel = -2. + (4. / (double) this.width) * (double) x;
-        double imag = -2. + (4. / (double) this.height) * (double) y;
+        double reel = -horzRange/2. + (horzRange /(double) this.width) * (double) x;
+        double imag = -vertRange/2. + (vertRange / (double) this.height) * (double) y;
         comps[x][y] = new Mandy(reel, imag);
-        // System.out.println("("+reel+", "+imag+")");
       }
     }
+  }
+
+  MainFrame() {
+    setComps(4.,4.);
 
     setDefaults();
 
