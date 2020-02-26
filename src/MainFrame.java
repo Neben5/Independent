@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.Color;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.function.Consumer;
@@ -13,8 +15,10 @@ public class MainFrame extends JFrame implements MouseListener {
   private static final long serialVersionUID = 1L;
   private int width = 800;
   private int height = 800;
+  private double vertRange = 4.;
+  private double horzRange = 4.;
   public Consumer<Color> cSupplier = (a) -> redraw(a);
-  private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);;
+  private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
   int a, b;
 
@@ -22,18 +26,20 @@ public class MainFrame extends JFrame implements MouseListener {
     new MainFrame();
   }
 
-  private void setComps(double horzRange, double vertRange){
-    for (int x = 0; x < this.width; x++) {
-      for (int y = 0; y < this.height; y++) {
-        double reel = -horzRange/2. + (horzRange /(double) this.width) * (double) x;
-        double imag = -vertRange/2. + (vertRange / (double) this.height) * (double) y;
+  private void setComps() {
+    comps = new Mandy[this.width][this.height];
+    for (int x = 0; x < comps.length; x++) {
+      for (int y = 0; y < comps[0].length; y++) {
+        double reel = -horzRange / 2. + (horzRange / (double) this.width) * (double) x;
+        double imag = -vertRange / 2. + (vertRange / (double) this.height) * (double) y;
         comps[x][y] = new Mandy(reel, imag);
       }
     }
+    img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   }
 
   MainFrame() {
-    setComps(4.,4.);
+    setComps();
 
     setDefaults();
 
@@ -46,6 +52,7 @@ public class MainFrame extends JFrame implements MouseListener {
   }
 
   public void redraw(Color c) {
+    getContentPane().setBackground(c);
     setBackground(c); // this is for the top bar lol gotta do getcontentpane() to get default jpanel
   }
 
@@ -53,22 +60,42 @@ public class MainFrame extends JFrame implements MouseListener {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(width, height);
     setTitle("Mandy");
+    addComponentListener(new ComponentListener() {
+      @Override
+      public void componentHidden(ComponentEvent event) {
+      }
+
+      @Override
+      public void componentMoved(ComponentEvent event) {
+      }
+
+      @Override
+      public void componentResized(ComponentEvent event) {
+        width = getContentPane().getWidth();
+        height = getContentPane().getHeight();
+        setComps();
+      }
+
+      @Override
+      public void componentShown(ComponentEvent event) {
+      }
+    });
   }
 
   public void paint(Graphics g) {
     float[] hsb = new float[3];
     Color current = getBackground();
     Color.RGBtoHSB(current.getRed(), current.getGreen(), current.getBlue(), hsb);
-    for (int x = 0; x < this.width; x++) {
-      for (int y = 0; y < this.height; y++) {
-        float i = 1f - ((float) comps[x][y].calculate() / 255f);
+    for (int x = 0; x < comps.length;x++) {
+      for (int y = 0; y < comps[0].length; y++) {
+        float i = 1f - ((float) comps[x][y].calculate() / 80f);
         Color c = Color.getHSBColor(hsb[0], hsb[1], i);
         img.setRGB(x, y, c.getRGB());
       }
     }
     g.drawImage(img, 0, 0, null);
     repaint();
-  }
+  } //note that 22 px on mac are lost to heading size
 
   @Override
   public void mouseClicked(MouseEvent e) {
