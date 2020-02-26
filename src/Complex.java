@@ -1,7 +1,6 @@
 
 public class Complex {
     private double real, imag;
-    private int iterations = 0;
 
     Complex() {
         this.real = 0;
@@ -11,10 +10,6 @@ public class Complex {
     Complex(double real, double imag) {
         this.real = real;
         this.imag = imag;
-    }
-
-    public int getIterations() {
-        return this.iterations;
     }
 
     public double getReal() {
@@ -93,8 +88,7 @@ public class Complex {
     }
 
     public Complex multiply(Complex that) {
-        return new Complex(((this.real * that.real) - (this.imag * that.imag)),
-                ((this.real * that.imag) + (this.imag + that.real)));
+        return new Complex(((this.real * that.real) - (this.imag * that.imag)), 2 * this.real * that.imag);
     }
 
     public static Complex divide(Complex that, Complex thatOther) {
@@ -108,13 +102,8 @@ public class Complex {
     }
 
     public Complex square() {
-        Complex instance = multiply(this);
-        this.real = instance.real;
-        this.imag = instance.imag;
-        this.iterations+=1000000;
-        if(iterations>=2000000000){
-            iterations=Integer.MAX_VALUE;
-        }
+        this.real = Math.pow(this.real, 2) - Math.pow(this.imag, 2);
+        this.imag = 2 * this.imag * this.real;
         return this;
     }
 }

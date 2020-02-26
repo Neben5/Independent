@@ -11,37 +11,28 @@ public class MainFrame extends JFrame implements MouseListener {
    *
    */
   private static final long serialVersionUID = 1L;
-  private int width = 1235;
-  private int height = 630;
+  private int width = 600;
+  private int height = 600;
   public Consumer<Color> cSupplier = (a) -> redraw(a);
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);;
-  private int[][] outs = new int[this.width][this.height];
   private Mandy[][] comps = new Mandy[this.width][this.height];
+  int a, b;
 
   public static void main(String[] args) {
     new MainFrame();
   }
 
-  public void calc() {
-    for(int x = 0; x < this.width; x++){
-      for(int y = 0; y < this.height; y++){
-        outs[x][y] = comps[x][y].calculate();
-      }
-    }
-    System.out.println("done");
-  }
-
   MainFrame() {
-    for(int x = 0; x < this.width; x++){
-      for(int y = 0; y < this.height; y++){
-        comps[x][y] = new Mandy(-2.+(2./(double)this.width)*(double)x,-2.+(2./(double)this.height)*(double)y);
+    for (int x = 0; x < this.width; x++) {
+      for (int y = 0; y < this.height; y++) {
+        double reel = -2. + (4. / (double) this.width) * (double) x;
+        double imag = -2. + (4. / (double) this.height) * (double) y;
+        comps[x][y] = new Mandy(reel, imag);
+        // System.out.println("("+reel+", "+imag+")");
       }
     }
-
 
     setDefaults();
-
-
 
     new ControlFrame(cSupplier);
     new CalcBroker();
@@ -65,16 +56,13 @@ public class MainFrame extends JFrame implements MouseListener {
     float[] hsb = new float[3];
     Color current = getBackground();
     Color.RGBtoHSB(current.getRed(), current.getGreen(), current.getBlue(), hsb);
-    calc();
     for (int x = 0; x < this.width; x++) {
       for (int y = 0; y < this.height; y++) {
-        try{
-        img.setRGB(x,y, new Color(1f-((float)outs[x][y]/255f),1f-((float)outs[x][y]/255f),1f-((float)outs[x][y]/255f)).getRGB());
-        }catch(Exception e){
-          System.out.println(outs[x][y]);
-        }
+        float i = 1f - ((float) comps[x][y].calculate() / 255f);
+        img.setRGB(x, y, new Color(i, i, i).getRGB());
       }
     }
+    System.out.println(comps[a][b]);
     g.drawImage(img, 0, 0, null);
 
     repaint();
