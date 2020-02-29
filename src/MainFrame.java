@@ -16,14 +16,12 @@ public class MainFrame extends JFrame implements MouseListener {
   private static final long serialVersionUID = 1L;
   private int width = 800;
   private int height = 800;
-  private double vertRange = 4.;
-  private double horzRange = 4.;
+  private double zoom = 4.;
   private double leftStart = 2.;
   private double rightStart = 2.;
-  public Consumer<Color> cSupplier = (a) -> redraw(a);
-  public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2], a[3]);
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
+  private CalcBroker broker;
   int a, b;
 
   public static void main(String[] args) {
@@ -34,24 +32,8 @@ public class MainFrame extends JFrame implements MouseListener {
     comps = new Mandy[this.width][this.height];
     for (int x = 0; x < comps.length; x++) {
       for (int y = 0; y < comps[0].length; y++) {
-        double reel = -horzRange / leftStart + (horzRange / (double) this.width) * (double) x;
-        double imag = -vertRange / rightStart + (vertRange / (double) this.height) * (double) y;
-        comps[x][y] = new Mandy(reel, imag);
-      }
-    }
-    img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-  }
-
-  private void setComps(double horzRange, double vertRange, double leftStart, double rightStart) {
-    this.horzRange = horzRange;
-    this.vertRange = vertRange;
-    this.leftStart = leftStart;
-    this.rightStart = rightStart;
-    comps = new Mandy[this.width][this.height];
-    for (int x = 0; x < comps.length; x++) {
-      for (int y = 0; y < comps[0].length; y++) {
-        double reel = -horzRange / leftStart + (horzRange / (double) this.width) * (double) x;
-        double imag = -vertRange / rightStart + (vertRange / (double) this.height) * (double) y;
+        double reel = -zoom / leftStart + (zoom / (double) this.width) * (double) x;
+        double imag = -zoom / rightStart + (zoom / (double) this.height) * (double) y;
         comps[x][y] = new Mandy(reel, imag);
       }
     }
@@ -63,17 +45,32 @@ public class MainFrame extends JFrame implements MouseListener {
 
     setDefaults();
 
-    new ControlFrame(cSupplier,rangeSupplier);
-    new CalcBroker();
+    broker = new CalcBroker((a) -> redraw(a), () -> height, () -> width);
+    ControlFrame control = new ControlFrame((Color a) -> recolor(a), (double[] a) -> broker.rePlot(a));
 
     setVisible(true);
     repaint();
 
   }
 
-  public void redraw(Color c) {
+  public void recolor(Color c) {
     getContentPane().setBackground(c);
     setBackground(c); // this is for the top bar lol gotta do getcontentpane() to get default jpanel
+  }
+
+  public void redraw(int[][] outs) {
+    System.out.println("drawing");
+    float[] hsb = new float[3];
+    Color current = getContentPane().getBackground();
+    Color.RGBtoHSB(current.getRed(), current.getGreen(), current.getBlue(), hsb);
+    for (int x = 0; x < outs.length; x++) {
+      for (int y = 0; y < outs[0].length; y++) {
+        float i = 1f - ((float) outs[x][y] / 80f);
+        Color c = Color.getHSBColor(hsb[0], hsb[1], i);
+        img.setRGB(x, y, c.getRGB());
+      }
+    }
+    repaint();
   }
 
   private void setDefaults() {
@@ -103,18 +100,12 @@ public class MainFrame extends JFrame implements MouseListener {
   }
 
   public void paint(Graphics g) {
-    float[] hsb = new float[3];
-    Color current = getBackground();
-    Color.RGBtoHSB(current.getRed(), current.getGreen(), current.getBlue(), hsb);
-    for (int x = 0; x < comps.length; x++) {
-      for (int y = 0; y < comps[0].length; y++) {
-        float i = 1f - ((float) comps[x][y].calculate() / 80f);
-        Color c = Color.getHSBColor(hsb[0], hsb[1], i);
-        img.setRGB(x, y, c.getRGB());
-      }
+    try {
+      broker.run();
+    } catch (Exception e) {
+
     }
     g.drawImage(img, 0, 0, null);
-    repaint();
   } // note that 22 px on mac are lost to heading size
 
   @Override

@@ -22,7 +22,8 @@ public class ControlFrame extends JFrame {
         this.colorConsumer = colorConsumer;
         this.rangeConsumer = rangeConsumer;
         setColorPanel();
-        setRangePanel(); // this has big issues. it completely overwrites colorpanel, doesn't pass correct arguments
+        setRangePanel(); // this has big issues. it completely overwrites colorpanel, doesn't pass
+                         // correct arguments
 
         setDefaults();
         pack();
@@ -30,23 +31,20 @@ public class ControlFrame extends JFrame {
 
     private void setRangePanel() {
         JPanel rangePanel = new JPanel();
-        JSlider rangeSlider = new JSlider(1, 800, 400); //add tickmarks
-        JSlider domainSlider = new JSlider(1, 800, 400);
+        JSlider zoomSlider = new JSlider(1, 800, 400); // add tickmarks
         JSlider rangeStart = new JSlider(0, 400, 200);
         JSlider domainStart = new JSlider(0, 400, 200);
         JButton dButton = new JButton("resize");
         dButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rangeConsumer.accept(new double[] { (double)domainSlider.getValue()/100., (double)rangeSlider.getValue()/100.,
-                        (double)domainStart.getValue()/100., (double)rangeStart.getValue()/100. });
+                rangeConsumer.accept(new double[] { (double) zoomSlider.getValue() / 100.,
+                        (double) domainStart.getValue() / 100., (double) rangeStart.getValue() / 100. });
 
             }
         });
-        rangePanel.add(rangeSlider);
-        rangePanel.add(new JLabel("range"));
-        rangePanel.add(domainSlider);
-        rangePanel.add(new JLabel("domain"));
+        rangePanel.add(zoomSlider);
+        rangePanel.add(new JLabel("zoom"));
         rangePanel.add(rangeStart);
         rangePanel.add(new JLabel("vert start"));
         rangePanel.add(domainStart);
