@@ -10,7 +10,7 @@ This is an application that will draw the mandelbrot set and colorize it. There 
 ## Fulfillments
 As of yet, this only manages to draw the mandelbrot set at a set range and scale, with colorization, zoom, color and pan. I need to add a 'header' separator to make sure that there is no gaps in the display, platform independently. The build script works for *NIX systems, but also I'm not sure I want to write a batch equivalent because windows is not something I personally support. Either way, you can execute them with the git terminal if on windows. Note that the builder now creates an executable jar, that can be executed as a normal application. Threading needs to be added, as window sizes abover 640:600 cause a decent delay when resizing the window on my 5-7 year old macbook air 13 inch. I know it's not a great processor, but also there's no reason it should be so cpu-heavy.
 ## Errors
-No errors surprisingly, but the program is very cpu and power intensive, which threading will hopefully help, but regardless it needs to be improved. Note that the main branch has many, mostly pertaining to the threading.
+No errors surprisingly, but the program is very cpu and power intensive, which threading will hopefully help, but regardless it needs to be improved. Note that the [testing](https://github.com/Neben5/Independent/tree/testing) branch has many errors, mostly pertaining to the threading.
 ## Overview
 
 See Mandelbrot Layout.png. MainFrame is the entrypoint and the main window. It controls the window, mouse events, the CalcBroker, and the ControlThread.
