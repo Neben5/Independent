@@ -24,10 +24,6 @@ public class MainFrame extends JFrame implements MouseListener {
   private CalcBroker broker;
   int a, b;
 
-  public static void main(String[] args) {
-    new MainFrame();
-  }
-
   private void setComps() {
     comps = new Mandy[this.width][this.height];
     for (int x = 0; x < comps.length; x++) {
