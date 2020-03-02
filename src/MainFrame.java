@@ -21,7 +21,7 @@ public class MainFrame extends JFrame implements MouseListener {
   private double leftStart = 2.;
   private double rightStart = 2.;
   public Consumer<Color> cSupplier = (a) -> redraw(a);
-  public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2], a[3]);
+  public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2]);
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
   int a, b;
@@ -38,9 +38,9 @@ public class MainFrame extends JFrame implements MouseListener {
     img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   }
 
-  private void setComps(double horzRange, double vertRange, double leftStart, double rightStart) {
+  private void setComps(double horzRange, double leftStart, double rightStart) {
     this.horzRange = horzRange;
-    this.vertRange = vertRange;
+    this.vertRange = horzRange;
     this.leftStart = leftStart;
     this.rightStart = rightStart;
     comps = new Mandy[this.width][this.height];
