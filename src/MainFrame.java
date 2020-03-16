@@ -14,6 +14,7 @@ public class MainFrame extends JFrame implements MouseListener {
    */
   // lags outside <640/600>
   private static final long serialVersionUID = 1L;
+  private int borderHeight = 22;
   private int width = 800;
   private int height = 800;
   private double vertRange = 4.;
@@ -21,7 +22,7 @@ public class MainFrame extends JFrame implements MouseListener {
   private double leftStart = 2.;
   private double rightStart = 2.;
   public Consumer<Color> cSupplier = (a) -> redraw(a);
-  public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2]);
+  public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2]); // zoom, horizontal pan, vertical pan
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
   int a, b;
@@ -55,12 +56,14 @@ public class MainFrame extends JFrame implements MouseListener {
   }
 
   MainFrame() {
+    if (System.getProperty("os.name").startsWith("Windows")) {
+      borderHeight = 45; // TODO verify this
+    }
     setComps();
 
     setDefaults();
 
-    new ControlFrame(cSupplier,rangeSupplier);
-
+    new ControlFrame(cSupplier, rangeSupplier);
 
     setVisible(true);
     repaint();
@@ -104,12 +107,12 @@ public class MainFrame extends JFrame implements MouseListener {
     Color.RGBtoHSB(current.getRed(), current.getGreen(), current.getBlue(), hsb);
     for (int x = 0; x < comps.length; x++) {
       for (int y = 0; y < comps[0].length; y++) {
-        float i = 1f - ((float) comps[x][y].calculate() / 80f);
+        float i = 1f - ((float) comps[x][y].calculate() / 40f);
         Color c = Color.getHSBColor(hsb[0], hsb[1], i);
         img.setRGB(x, y, c.getRGB());
       }
     }
-    g.drawImage(img, 0, 0, null);
+    g.drawImage(img, 0, borderHeight, null);
     repaint();
   } // note that 22 px on mac are lost to heading size
 
