@@ -19,10 +19,12 @@ public class MainFrame extends JFrame implements MouseListener {
   private int horizontalPadding = 0;
   private int width = 800;
   private int height = 800;
+  // These need to be moved to CalcBroker
   private double vertRange = 4.;
   private double horzRange = 4.;
   private double leftStart = 2.;
   private double rightStart = 2.;
+  //
   public Consumer<Color> cSupplier = (a) -> redraw(a);
   public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2]); // zoom, horizontal pan, vertical pan
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
