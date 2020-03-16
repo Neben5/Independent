@@ -29,7 +29,6 @@ public class MainFrame extends JFrame implements MouseListener {
   public Consumer<double[]> rangeSupplier = (a) -> setComps(a[0], a[1], a[2]); // zoom, horizontal pan, vertical pan
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
-  int a, b;
 
   public static void main(String[] args) {
     new MainFrame();
