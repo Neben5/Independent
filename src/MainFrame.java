@@ -1,12 +1,13 @@
-import javax.swing.*;
-import java.awt.image.BufferedImage;
-import java.awt.*;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
+
+import javax.swing.JFrame;
 
 public class MainFrame extends JFrame implements MouseListener {
   /**
@@ -14,7 +15,8 @@ public class MainFrame extends JFrame implements MouseListener {
    */
   // lags outside <640/600>
   private static final long serialVersionUID = 1L;
-  private int borderHeight = 22;
+  private int verticalPadding = 22;
+  private int horizontalPadding = 0;
   private int width = 800;
   private int height = 800;
   private double vertRange = 4.;
@@ -26,6 +28,27 @@ public class MainFrame extends JFrame implements MouseListener {
   private BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
   private Mandy[][] comps = new Mandy[this.width][this.height];
   int a, b;
+
+  public static void main(String[] args) {
+    new MainFrame();
+  }
+
+  MainFrame() {
+    if (System.getProperty("os.name").startsWith("Windows")) {
+      System.out.println("windows");
+      verticalPadding = 30; // TODO verify this
+      horizontalPadding = 8;
+    }
+    setComps();
+
+    setDefaults();
+
+    new ControlFrame(cSupplier, rangeSupplier);
+
+    setVisible(true);
+    repaint();
+
+  }
 
   private void setComps() {
     comps = new Mandy[this.width][this.height];
@@ -53,21 +76,6 @@ public class MainFrame extends JFrame implements MouseListener {
       }
     }
     img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-  }
-
-  MainFrame() {
-    if (System.getProperty("os.name").startsWith("Windows")) {
-      borderHeight = 45; // TODO verify this
-    }
-    setComps();
-
-    setDefaults();
-
-    new ControlFrame(cSupplier, rangeSupplier);
-
-    setVisible(true);
-    repaint();
-
   }
 
   public void redraw(Color c) {
@@ -112,7 +120,7 @@ public class MainFrame extends JFrame implements MouseListener {
         img.setRGB(x, y, c.getRGB());
       }
     }
-    g.drawImage(img, 0, borderHeight, null);
+    g.drawImage(img, horizontalPadding, verticalPadding, null);
     repaint();
   } // note that 22 px on mac are lost to heading size
 
