@@ -36,7 +36,6 @@ public class MainFrame extends JFrame implements MouseListener {
 
   MainFrame() {
     if (System.getProperty("os.name").startsWith("Windows")) {
-      System.out.println("windows");
       verticalPadding = 30; // TODO verify this
       horizontalPadding = 8;
     }
@@ -47,6 +46,8 @@ public class MainFrame extends JFrame implements MouseListener {
     new ControlFrame(cSupplier, rangeSupplier);
 
     setVisible(true);
+    System.out.println(getSize() + " : " + getContentPane().getSize());
+
     repaint();
 
   }
